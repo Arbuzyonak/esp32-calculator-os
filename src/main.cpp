@@ -43,6 +43,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 void initialize_screen();  // Start up screen
 void initialize_buttons(); // pinMode setup
+void initialize_loading();
 
 void move_up_rectangle();   // Move the select rectangle 20 pixels up
 void move_down_rectangle(); // Move the select rectangle 20 pixels down
@@ -58,6 +59,8 @@ void open_clock_app();     // Open the clock app
 
 void open_news_app(); // Open the news app
 void open_general_news(int position);
+
+void open_gemeni();
 
 void setup()
 {
@@ -182,7 +185,11 @@ void loop()
       else if (rectangle_y_position == 110 && current_page == 7)
       {
         open_general_news(rectangle_y_position);
+      } else if (rectangle_y_position == 70 && current_page == 4)
+      {
+        open_gemeni();
       }
+      
     }
 
     // The things above this let us navigate between main pages
@@ -218,6 +225,12 @@ void initialize_screen()
   tft.fillScreen(ST7735_BLACK);
   tft.setRotation(1);
   open_main_page();
+}
+
+void initialize_loading() {
+  tft.fillScreen(ST7735_BLACK);
+  tft.setCursor(50, 50);
+  tft.print("LOADING");
 }
 
 void open_main_page()
@@ -326,9 +339,7 @@ void open_weather_app()
   HTTPClient http;
   http.begin("https://api.open-meteo.com/v1/gem/?latitude=45.5&longitude=-73.57&current=temperature_2m,rain,snowfall,precipitation,cloud_cover,wind_speed_10m");
 
-  tft.fillScreen(ST7735_BLACK);
-  tft.setCursor(50, 50);
-  tft.print("LOADING");
+  initialize_loading();
 
   int responseCode = http.GET();
   String response = http.getString();
@@ -374,9 +385,7 @@ void open_weather_app_2()
   HTTPClient http;
   http.begin("https://api.open-meteo.com/v1/gem/?latitude=45.5&longitude=-73.57&timezone=America%2FToronto&daily=sunrise,sunset&current=relative_humidity_2m");
 
-  tft.fillScreen(ST7735_BLACK);
-  tft.setCursor(50, 50);
-  tft.print("LOADING");
+  initialize_loading();
 
   int responseCode = http.GET();
   String response = http.getString();
@@ -416,9 +425,7 @@ void open_clock_app()
   HTTPClient http;
   http.begin("https://timeapi.io/api/v1/timezone/zone?timeZone=America%2FToronto");
 
-  tft.fillScreen(ST7735_BLACK);
-  tft.setCursor(50, 50);
-  tft.print("LOADING");
+  initialize_loading();
 
   int responseCode = http.GET();
   String response = http.getString();
@@ -507,9 +514,7 @@ void open_general_news(int position)
     http.begin("https://newsapi.org/v2/top-headlines?category=business&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
   }
 
-  tft.fillScreen(ST7735_BLACK);
-  tft.setCursor(50, 50);
-  tft.print("LOADING");
+  initialize_loading();
 
   int responseCode = http.GET();
   String response = http.getString();
@@ -534,4 +539,11 @@ void open_general_news(int position)
   tft.print(headline_title + ":" + "\n" + headline_description);
 
   http.end();
+}
+
+void open_gemeni() {
+  current_page = 8;
+  scroll = false;
+
+  tft.fillScreen(ST7735_BLACK);
 }
