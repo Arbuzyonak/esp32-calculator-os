@@ -56,7 +56,7 @@ void open_weather_app();   // Get weather data for  Montreal
 void open_weather_app_2(); // second page of the weather app
 void open_clock_app();     // Open the clock app
 
-void open_news_app();      // Open the news app
+void open_news_app(); // Open the news app
 void open_general_news(int position);
 
 void setup()
@@ -75,112 +75,120 @@ void setup()
 
 void loop()
 {
-  
- { currentStateCLK = digitalRead(CLK);
-  if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
-    if (digitalRead(DT) != currentStateCLK) {
-      counter++; // Clockwise
-    } else {
-      counter--; // Counter-clockwise
+
+  {
+    currentStateCLK = digitalRead(CLK);
+    if (currentStateCLK != lastStateCLK && currentStateCLK == 1)
+    {
+      if (digitalRead(DT) != currentStateCLK)
+      {
+        counter++; // Clockwise
+      }
+      else
+      {
+        counter--; // Counter-clockwise
+      }
+      Serial.println(counter);
     }
-    Serial.println(counter);
+    lastStateCLK = currentStateCLK;
+
+    if (digitalRead(up_button) == HIGH && digitalRead(down_button) == HIGH)
+    { // Go to the main page from the calcualtor page
+      if (current_page == 1)
+        return;
+
+      open_main_page();
+      tft.setTextSize(1);
+      current_page = 1;
+      headline = 0;
+      scroll = true;
+    }
+
+    if (digitalRead(up_button) == HIGH)
+    { // go up
+      if (scroll == false)
+        return;
+
+      if (rectangle_y_position == 10)
+        return;
+      move_up_rectangle();
+    }
+
+    if (digitalRead(down_button) == HIGH)
+    { // go down
+      if (scroll == false)
+        return;
+
+      Serial.println(rectangle_y_position);
+      if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7))
+        return;
+      if (rectangle_y_position >= 90 && (current_page == 3 || current_page == 4))
+        return;
+      if (rectangle_y_position >= 110 && (current_page == (7)))
+        return;
+      move_down_rectangle();
+    }
+
+    if (digitalRead(select_button) == HIGH)
+    { // The options are divided like this: Calculator = 10p; Games = 30p; Internet = 50p;
+      if (rectangle_y_position == 10 && current_page == 1)
+      {
+        open_calculator_page();
+      }
+      else if (rectangle_y_position == 30 && current_page == 1)
+      {
+        open_games_page();
+      }
+      else if (rectangle_y_position == 50 && current_page == 1)
+      {
+        open_internet_page();
+      }
+      else if (rectangle_y_position == 10 && current_page == 4)
+      {
+        open_weather_app();
+      }
+      else if (current_page == 5)
+      {
+        open_weather_app_2();
+      }
+      else if (rectangle_y_position == 30 && current_page == 4)
+      {
+        open_clock_app();
+      }
+      else if (rectangle_y_position == 50 && current_page == 4)
+      {
+        open_news_app();
+      }
+      else if (rectangle_y_position == 10 && current_page == 7)
+      {
+        open_general_news(rectangle_y_position);
+      }
+      else if (rectangle_y_position == 30 && current_page == 7)
+      {
+        open_general_news(rectangle_y_position);
+      }
+      else if (rectangle_y_position == 50 && current_page == 7)
+      {
+        open_general_news(rectangle_y_position);
+      }
+      else if (rectangle_y_position == 70 && current_page == 7)
+      {
+        open_general_news(rectangle_y_position);
+      }
+      else if (rectangle_y_position == 90 && current_page == 7)
+      {
+        open_general_news(rectangle_y_position);
+      }
+      else if (rectangle_y_position == 110 && current_page == 7)
+      {
+        open_general_news(rectangle_y_position);
+      }
+    }
+
+    // The things above this let us navigate between main pages
+
+    delay(200);
   }
-  lastStateCLK = currentStateCLK;   
-
-
-  if (digitalRead(up_button) == HIGH && digitalRead(down_button) == HIGH)
-  { // Go to the main page from the calcualtor page
-    if (current_page == 1) return;
-
-    open_main_page();
-    tft.setTextSize(1);
-    current_page = 1;
-    headline = 0;
-    scroll = true;
-  }
-
-  if (digitalRead(up_button) == HIGH)
-  { // go up
-    if (scroll == false) return;
-
-    if (rectangle_y_position == 10)
-      return;
-    move_up_rectangle();
-  }
-
-  if (digitalRead(down_button) == HIGH)
-  { // go down
-    if (scroll == false) return;
-
-    Serial.println(rectangle_y_position);
-    if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7))
-      return;
-    if (rectangle_y_position >= 90 && (current_page == 3 || current_page == 4))
-      return;
-    if (rectangle_y_position >= 110 && (current_page == (7)))
-      return;
-    move_down_rectangle();
-  }
-
-  if (digitalRead(select_button) == HIGH)
-  { // The options are divided like this: Calculator = 10p; Games = 30p; Internet = 50p;
-    if (rectangle_y_position == 10 && current_page == 1)
-    {
-      open_calculator_page();
-    }
-    else if (rectangle_y_position == 30 && current_page == 1)
-    {
-      open_games_page();
-    }
-    else if (rectangle_y_position == 50 && current_page == 1)
-    {
-      open_internet_page();
-    }
-    else if (rectangle_y_position == 10 && current_page == 4)
-    {
-      open_weather_app();
-    }
-    else if (current_page == 5)
-    {
-      open_weather_app_2();
-    }
-    else if (rectangle_y_position == 30 && current_page == 4)
-    {
-      open_clock_app();
-    }
-    else if (rectangle_y_position == 50 && current_page == 4)
-    {
-      open_news_app();
-
-    } else if (rectangle_y_position == 10 && current_page == 7)
-    {
-      open_general_news(rectangle_y_position);
-
-    }else if (rectangle_y_position == 30 && current_page == 7)
-    {
-      open_general_news(rectangle_y_position);
-
-    } else if (rectangle_y_position == 50 && current_page == 7)
-    {
-      open_general_news(rectangle_y_position);
-
-    } else if (rectangle_y_position == 70 && current_page == 7)
-    {
-      open_general_news(rectangle_y_position);
-
-    } else if (rectangle_y_position == 90 && current_page == 7)
-    {
-      open_general_news(rectangle_y_position);
-
-    } else if (rectangle_y_position == 110 && current_page == 7)
-    {
-      open_general_news(rectangle_y_position);
-    }
-}
-
-  // The things above this let us navigate between main pages
-
-  delay(200);
 }
 
 void initialize_buttons()
@@ -467,31 +475,37 @@ void open_news_app()
   tft.print("Business");
 }
 
-void open_general_news(int position) {  
+void open_general_news(int position)
+{
   scroll = false;
   headline = headline + 1;
 
   HTTPClient http;
-  
-  if (position == 10) {
+
+  if (position == 10)
+  {
     http.begin("https://newsapi.org/v2/top-headlines?category=general&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
-  }else if (position == 30)
+  }
+  else if (position == 30)
   {
     http.begin("https://newsapi.org/v2/top-headlines?category=technology&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
-  } else if (position == 50)
+  }
+  else if (position == 50)
   {
     http.begin("https://newsapi.org/v2/top-headlines?category=science&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
-  } else if (position == 70)
+  }
+  else if (position == 70)
   {
     http.begin("https://newsapi.org/v2/top-headlines?category=health&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
-  } else if (position == 90)
+  }
+  else if (position == 90)
   {
     http.begin("https://newsapi.org/v2/top-headlines?category=entertainment&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
-  } else if (position == 110)
+  }
+  else if (position == 110)
   {
     http.begin("https://newsapi.org/v2/top-headlines?category=business&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
   }
-  
 
   tft.fillScreen(ST7735_BLACK);
   tft.setCursor(50, 50);
@@ -502,7 +516,7 @@ void open_general_news(int position) {
 
   JsonDocument doc;
   deserializeJson(doc, response);
- 
+
   String headline_source = doc["articles"][headline]["source"]["name"];
   String headline_title = doc["articles"][headline]["title"];
   String headline_description = doc["articles"][headline]["description"];
@@ -510,14 +524,14 @@ void open_general_news(int position) {
   Serial.print(headline);
 
   tft.fillScreen(ST7735_BLACK);
-  
-  tft.setCursor(5,5);
+
+  tft.setCursor(5, 5);
   tft.print(headline_source);
 
   tft.setTextSize(0.5);
 
   tft.setCursor(0, 20);
   tft.print(headline_title + ":" + "\n" + headline_description);
-  
+
   http.end();
 }
