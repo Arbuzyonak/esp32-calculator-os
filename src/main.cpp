@@ -58,6 +58,7 @@ void initialize_keyboard();
 
 void move_up_rectangle();   // Move the select rectangle 20 pixels up
 void move_down_rectangle(); // Move the select rectangle 20 pixels down
+void move_keyboard_right();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
@@ -102,7 +103,6 @@ void loop()
       {
         counter--; // Counter-clockwise
       }
-      Serial.println(counter);
     }
     lastStateCLK = currentStateCLK;
 
@@ -133,7 +133,6 @@ void loop()
       if (scroll == false)
         return;
 
-      Serial.println(rectangle_y_position);
       if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7))
         return;
       if (rectangle_y_position >= 90 && (current_page == 3 || current_page == 4))
@@ -245,10 +244,30 @@ void initialize_loading() {
 }
 
 void initialize_keyboard() {
-  String letters[] = {"A", "B", "C", "D", "E"};
+  String letters[] = {
+    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
+    "A", "S", "D", "F", "G", "H", "J", "K", "L",
+    "Z", "X", "C", "V", "B", "N", "M"
+  };
 
-  for (int i = 0; i <= 4; i++) {
-    tft.setCursor(10 + i * 10, 10);
-    tft.print(letters[i + 1]);
+  int spacing = 16;
+  int y_position = 90;
+
+  for (int i = 0; i <= 25; i++) {
+    if (i <= 9) {
+      tft.setCursor(5 + i * spacing, y_position);
+      tft.print(letters[i]);
+    } else if (i <= 18) {
+      tft.setCursor(10 + (i - 10) * spacing, y_position + 10);
+      tft.print(letters[i]);
+    } else {
+      tft.setCursor(15 + (i - 19) * spacing, y_position + 20);
+      tft.print(letters[i]);
+    }
   }
+  move_keyboard_right();
+}
+
+void move_keyboard_right() {
+  tft.drawRect(2, 88, 11, 10, ST7735_CYAN);
 }
