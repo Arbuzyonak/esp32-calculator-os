@@ -31,6 +31,8 @@ const int TFT_RST = 2;
 // button variables
 const int up_button = 34;
 const int down_button = 17;
+const int left_button = 13;
+const int right_button = 12;
 const int select_button = 19;
 
 const int CLK = 35;
@@ -42,6 +44,10 @@ int currentStateCLK;
 int lastStateCLK;
 
 int rectangle_y_position = 10;
+
+int keyboard_x_position = 2;
+int keyboard_y_position = 98;
+int keyboard_row = 1;
 
 int current_page = 1;
 
@@ -58,7 +64,9 @@ void initialize_keyboard();
 
 void move_up_rectangle();   // Move the select rectangle 20 pixels up
 void move_down_rectangle(); // Move the select rectangle 20 pixels down
+
 void move_keyboard_right();
+void move_keyboard_left();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
@@ -90,7 +98,6 @@ void setup()
 
 void loop()
 {
-
   {
     currentStateCLK = digitalRead(CLK);
     if (currentStateCLK != lastStateCLK && currentStateCLK == 1)
@@ -116,20 +123,23 @@ void loop()
       current_page = 1;
       headline = 0;
       scroll = true;
+      
+      keyboard_x_position = 2;
+      keyboard_y_position = 98;
+      keyboard_row = 1;
     }
 
     if (digitalRead(up_button) == HIGH)
     { // go up
-      if (scroll == false)
-        return;
 
-      if (rectangle_y_position == 10)
-        return;
+      if (scroll == false) return;
+      if (rectangle_y_position == 10) return;
       move_up_rectangle();
     }
 
     if (digitalRead(down_button) == HIGH)
     { // go down
+      
       if (scroll == false)
         return;
 
@@ -140,6 +150,14 @@ void loop()
       if (rectangle_y_position >= 110 && (current_page == (7)))
         return;
       move_down_rectangle();
+    }
+
+    if (digitalRead(right_button) == HIGH) {
+      if (current_page == 8) move_keyboard_right();
+    }
+
+    if (digitalRead(left_button) == HIGH) {
+      if (current_page == 8) move_keyboard_left();
     }
 
     if (digitalRead(select_button) == HIGH)
@@ -199,7 +217,6 @@ void loop()
       {
         open_gemeni();
       }
-      
     }
 
     // The things above this let us navigate between main pages
@@ -212,6 +229,8 @@ void initialize_buttons()
 {
   pinMode(up_button, INPUT);
   pinMode(down_button, INPUT);
+  pinMode(left_button, INPUT);
+  pinMode(right_button, INPUT);
   pinMode(select_button, INPUT);
 }
 
@@ -251,23 +270,33 @@ void initialize_keyboard() {
   };
 
   int spacing = 16;
-  int y_position = 90;
+  int y_position = 100;
 
   for (int i = 0; i <= 25; i++) {
     if (i <= 9) {
       tft.setCursor(5 + i * spacing, y_position);
       tft.print(letters[i]);
     } else if (i <= 18) {
-      tft.setCursor(10 + (i - 10) * spacing, y_position + 10);
+      tft.setCursor(5 + (i - 10) * spacing, y_position + 10);
       tft.print(letters[i]);
     } else {
-      tft.setCursor(15 + (i - 19) * spacing, y_position + 20);
+      tft.setCursor(5 + (i - 19) * spacing, y_position + 20);
       tft.print(letters[i]);
     }
   }
-  move_keyboard_right();
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_CYAN);
 }
 
 void move_keyboard_right() {
-  tft.drawRect(2, 88, 11, 10, ST7735_CYAN);
+  if (keyboard_x_position >= 144) return;
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_BLACK);
+  keyboard_x_position += 16;
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_CYAN);
+}
+
+void move_keyboard_left() {
+  if (keyboard_x_position <= 2) return;
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_BLACK);
+  keyboard_x_position -= 16;
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_CYAN);
 }
