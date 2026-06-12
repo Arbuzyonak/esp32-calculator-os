@@ -45,8 +45,8 @@ int lastStateCLK;
 
 int rectangle_y_position = 10;
 
-int keyboard_x_position = 2;
-int keyboard_y_position = 98;
+int keyboard_x_position = 2; // 146
+int keyboard_y_position = 95; // 95, 105, 115
 int keyboard_row = 1;
 
 int current_page = 1;
@@ -67,6 +67,8 @@ void move_down_rectangle(); // Move the select rectangle 20 pixels down
 
 void move_keyboard_right();
 void move_keyboard_left();
+void move_keyboard_up();
+void move_keyboard_down();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
@@ -99,20 +101,6 @@ void setup()
 void loop()
 {
   {
-    currentStateCLK = digitalRead(CLK);
-    if (currentStateCLK != lastStateCLK && currentStateCLK == 1)
-    {
-      if (digitalRead(DT) != currentStateCLK)
-      {
-        counter++; // Clockwise
-      }
-      else
-      {
-        counter--; // Counter-clockwise
-      }
-    }
-    lastStateCLK = currentStateCLK;
-
     if (digitalRead(up_button) == HIGH && digitalRead(down_button) == HIGH)
     { // Go to the main page from the calcualtor page
       if (current_page == 1)
@@ -125,12 +113,16 @@ void loop()
       scroll = true;
       
       keyboard_x_position = 2;
-      keyboard_y_position = 98;
+      keyboard_y_position = 95;
       keyboard_row = 1;
     }
 
     if (digitalRead(up_button) == HIGH)
     { // go up
+
+      if (current_page == 8) {
+        move_keyboard_up();
+      }
 
       if (scroll == false) return;
       if (rectangle_y_position == 10) return;
@@ -140,6 +132,11 @@ void loop()
     if (digitalRead(down_button) == HIGH)
     { // go down
       
+      if (current_page == 8) {
+        move_keyboard_down();
+        delay(200);
+      }
+
       if (scroll == false)
         return;
 
@@ -270,7 +267,7 @@ void initialize_keyboard() {
   };
 
   int spacing = 16;
-  int y_position = 100;
+  int y_position = 98;
 
   for (int i = 0; i <= 25; i++) {
     if (i <= 9) {
@@ -284,19 +281,41 @@ void initialize_keyboard() {
       tft.print(letters[i]);
     }
   }
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_CYAN);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
 void move_keyboard_right() {
   if (keyboard_x_position >= 144) return;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_BLACK);
+  if (keyboard_x_position == 130 && keyboard_y_position == 106) return; // L letter block
+  if (keyboard_y_position == 117 && keyboard_x_position == 98) return; // M letter block
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_CYAN);
+  Serial.println(keyboard_x_position);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
 void move_keyboard_left() {
   if (keyboard_x_position <= 2) return;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_BLACK);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position -= 16;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 11, 10, ST7735_CYAN);
+  Serial.println(keyboard_x_position);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+}
+
+void move_keyboard_up() {
+  if (keyboard_y_position <= 95) return;
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
+  keyboard_y_position -= 11;
+  Serial.println(keyboard_y_position);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+  delay(200);
+}
+
+void move_keyboard_down() {
+  if (keyboard_y_position >= 115) return;
+  if ((keyboard_y_position == 106 && keyboard_x_position == 130) || keyboard_x_position == 114) return; // k and l letter block down
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
+  keyboard_y_position += 11;
+  Serial.println(keyboard_y_position);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
