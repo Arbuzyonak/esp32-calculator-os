@@ -49,6 +49,12 @@ int keyboard_x_position = 2; // 146
 int keyboard_y_position = 95; // 95, 105, 115
 int keyboard_row = 1;
 
+String letters[] = {
+    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
+    "A", "S", "D", "F", "G", "H", "J", "K", "L",
+    "Z", "X", "C", "V", "B", "N", "M"
+  };
+
 int current_page = 1;
 
 int headline = 0;
@@ -69,13 +75,14 @@ void move_keyboard_right();
 void move_keyboard_left();
 void move_keyboard_up();
 void move_keyboard_down();
+int calculate_letter_position();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
 void open_games_page();      // Open the page with all the games
 void open_internet_page();   // Open the page with all the internet apps
 
-void open_weather_app();   // Get weather data for  Montreal
+void open_weather_app();   // Get weather data for Montreal
 void open_weather_app_2(); // second page of the weather app
 void open_clock_app();     // Open the clock app
 
@@ -213,7 +220,11 @@ void loop()
       } else if (rectangle_y_position == 70 && current_page == 4)
       {
         open_gemeni();
+      } else if (current_page == 8)
+      {
+        calculate_letter_position();
       }
+      
     }
 
     // The things above this let us navigate between main pages
@@ -260,11 +271,6 @@ void initialize_loading() {
 }
 
 void initialize_keyboard() {
-  String letters[] = {
-    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-    "A", "S", "D", "F", "G", "H", "J", "K", "L",
-    "Z", "X", "C", "V", "B", "N", "M"
-  };
 
   int spacing = 16;
   int y_position = 98;
@@ -282,6 +288,7 @@ void initialize_keyboard() {
     }
   }
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+  tft.drawLine(0, 90, 160, 90, ST7735_CYAN);
 }
 
 void move_keyboard_right() {
@@ -290,7 +297,6 @@ void move_keyboard_right() {
   if (keyboard_y_position == 117 && keyboard_x_position == 98) return; // M letter block
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
-  Serial.println(keyboard_x_position);
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
@@ -298,7 +304,6 @@ void move_keyboard_left() {
   if (keyboard_x_position <= 2) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position -= 16;
-  Serial.println(keyboard_x_position);
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
@@ -306,16 +311,29 @@ void move_keyboard_up() {
   if (keyboard_y_position <= 95) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position -= 11;
-  Serial.println(keyboard_y_position);
+  keyboard_row -= 1;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
   delay(200);
 }
 
 void move_keyboard_down() {
-  if (keyboard_y_position >= 115) return;
-  if ((keyboard_y_position == 106 && keyboard_x_position == 130) || keyboard_x_position == 114) return; // k and l letter block down
+  if (keyboard_y_position >= 115 || keyboard_x_position == 146) return;
+  if (keyboard_y_position == 106 && keyboard_x_position == 130) return; // k and l letter block down
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position += 11;
-  Serial.println(keyboard_y_position);
+  keyboard_row += 1;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+}
+
+int calculate_letter_position() {
+  int col = (int)keyboard_x_position / 16;
+
+  if (keyboard_row == 2) {
+    col += 10;
+  } else if (keyboard_row == 3)
+  {
+    col += 20;
+  }
+  Serial.println(letters[col]);
+  return col;
 }
