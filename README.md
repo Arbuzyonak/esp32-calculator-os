@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Calculator Menu app
 
 
@@ -16,3 +17,7 @@ current_page = 5; -→ Weather app
 current_page = 6; -→ Clock app
 
 current_page = 7; -→ News app
+=======
+# esp32-calculator-os
+An operating system for the esp32 microcontroller with Internet functionality and video games.
+>>>>>>> 94a8d630fe5de138ff9d5d6624ab980968bfeb14
