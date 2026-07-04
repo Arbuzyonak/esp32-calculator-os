@@ -3,6 +3,7 @@
 #include <Adafruit_ST7735.h>
 #include <SPI.h>
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
@@ -16,12 +17,12 @@
 #include "main_pages/calculator_page/calculator_page.h"
 #include "main_pages/main_page/main_page.h"
 
-// Notes: use canvaces instead of directly printing // Instead of buttons use http and a browser for now //
+#include "secrets.h"
 
-// News api key = 01c6dc4af25e478cad5ba179626dfe3e
+// Notes: use canvaces instead of directly printing // Instead of buttons use http and a browser for now
 
-const char *ssid = "Arbuzik";
-const char *password = "Nassif2026";
+const char *ssid = WIFI_SSID;
+const char *password = WIFI_PASSWORD;
 
 // tft object variables
 const int TFT_CS = 5;
@@ -96,13 +97,22 @@ void setup()
   Serial.begin(115200);
   initialize_screen();
   initialize_buttons();
+
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
+
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected!");
+  Serial.println(WiFi.localIP());
+  Serial.println(WiFi.dnsIP());
 
   pinMode(CLK, INPUT);
   pinMode(DT, INPUT);
   pinMode(SW, PULLUP);
-  lastStateCLK = digitalRead(CLK);
-  // tft.drawRect(10, 10, 75, 20, ST77XX_BLACK);
 }
 
 void loop()
@@ -285,6 +295,10 @@ void initialize_keyboard() {
     } else {
       tft.setCursor(5 + (i - 19) * spacing, y_position + 20);
       tft.print(letters[i]);
+      
+      //Print the enter button
+      tft.setCursor(117, 117);
+      tft.print("e");
     }
   }
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
@@ -294,7 +308,7 @@ void initialize_keyboard() {
 void move_keyboard_right() {
   if (keyboard_x_position >= 144) return;
   if (keyboard_x_position == 130 && keyboard_y_position == 106) return; // L letter block
-  if (keyboard_y_position == 117 && keyboard_x_position == 98) return; // M letter block
+  if (keyboard_y_position == 117 && keyboard_x_position == 114) return; // Enter letter block
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
@@ -332,8 +346,8 @@ int calculate_letter_position() {
     col += 10;
   } else if (keyboard_row == 3)
   {
-    col += 20;
+    col += 19;
   }
-  Serial.println(letters[col]);
+  Serial.print(letters[col]);
   return col;
 }

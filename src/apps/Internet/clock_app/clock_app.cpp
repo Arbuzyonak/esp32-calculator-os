@@ -6,6 +6,9 @@ void open_clock_app()
   current_page = 6;
   scroll = false;
 
+
+  WiFiClientSecure client;
+  client.setInsecure();
   HTTPClient http;
   http.begin("https://timeapi.io/api/v1/timezone/zone?timeZone=America%2FToronto");
 

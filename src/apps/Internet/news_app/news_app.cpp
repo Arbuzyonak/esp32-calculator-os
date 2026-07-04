@@ -1,4 +1,5 @@
 #include "apps/globals.h"
+#include "secrets.h"
 extern int headline;
 
 void open_news_app()
@@ -33,33 +34,33 @@ void open_general_news(int position)
 {
   scroll = false;
   headline = headline + 1;
-
+  
+  WiFiClientSecure client;
+  client.setInsecure();
   HTTPClient http;
 
-  if (position == 10)
-  {
-    http.begin("https://newsapi.org/v2/top-headlines?category=general&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
+  String url;
+
+  if (position == 10) {
+      url = String("https://newsapi.org/v2/top-headlines?category=general&apiKey=") + NEWS_API_KEY;
   }
-  else if (position == 30)
-  {
-    http.begin("https://newsapi.org/v2/top-headlines?category=technology&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
+  else if (position == 30) {
+      url = String("https://newsapi.org/v2/top-headlines?category=technology&apiKey=") + NEWS_API_KEY;
   }
-  else if (position == 50)
-  {
-    http.begin("https://newsapi.org/v2/top-headlines?category=science&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
+  else if (position == 50) {
+      url = String("https://newsapi.org/v2/top-headlines?category=science&apiKey=") + NEWS_API_KEY;
   }
-  else if (position == 70)
-  {
-    http.begin("https://newsapi.org/v2/top-headlines?category=health&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
+  else if (position == 70) {
+      url = String("https://newsapi.org/v2/top-headlines?category=health&apiKey=") + NEWS_API_KEY;
   }
-  else if (position == 90)
-  {
-    http.begin("https://newsapi.org/v2/top-headlines?category=entertainment&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
+  else if (position == 90) {
+      url = String("https://newsapi.org/v2/top-headlines?category=entertainment&apiKey=") + NEWS_API_KEY;
   }
-  else if (position == 110)
-  {
-    http.begin("https://newsapi.org/v2/top-headlines?category=business&apiKey=01c6dc4af25e478cad5ba179626dfe3e");
+  else if (position == 110) {
+      url = String("https://newsapi.org/v2/top-headlines?category=business&apiKey=") + NEWS_API_KEY;
   }
+
+  http.begin(url);
 
   initialize_loading();
 
