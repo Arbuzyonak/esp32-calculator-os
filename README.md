@@ -11,11 +11,15 @@ An operating system for the esp32 microcontroller with Internet functionality an
 - antena (optional)
 - usb cable to upload the code
 
-# How to setup
+# How to setup software
 - Install the platformio extention
 - import a project to platformio
 - create a secrets.h file will all of your secrets
 - upload the code to the esp32
+
+# How to setup hardware
+- Connect the 6 buttons to the breadboard and the esp32 (choose any pins you want. you can change them in main.cpp later)
+- Conenct the screen to the esp32 (this is the best tutorial I could find, sadly it's in german so just translate the page. https://www.az-delivery.de/en/blogs/azdelivery-blog-fur-arduino-und-raspberry-pi/1-8-toll-tft-am-esp-32-dev-kit-c-betreiben)
 
 # Showcase
 - Main menu
