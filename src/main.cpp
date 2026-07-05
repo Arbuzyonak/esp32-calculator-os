@@ -46,15 +46,16 @@ int lastStateCLK;
 
 int rectangle_y_position = 10;
 
-int keyboard_x_position = 2; // 146
+int keyboard_x_position = 2;  // 146
 int keyboard_y_position = 95; // 95, 105, 115
 int keyboard_row = 1;
 
 String letters[] = {
     "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
     "A", "S", "D", "F", "G", "H", "J", "K", "L",
-    "Z", "X", "C", "V", "B", "N", "M"
-  };
+    "Z", "X", "C", "V", "B", "N", "M"};
+
+String human_message; 
 
 int current_page = 1;
 
@@ -78,6 +79,8 @@ void move_keyboard_left();
 void move_keyboard_up();
 void move_keyboard_down();
 int calculate_letter_position();
+void print_keyboard_letters();
+void get_human_message();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
@@ -103,7 +106,8 @@ void setup()
   WiFi.begin(ssid, password);
 
   Serial.print("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
     Serial.print(".");
   }
@@ -129,29 +133,34 @@ void loop()
       current_page = 1;
       headline = 0;
       scroll = true;
-      
+
       keyboard_x_position = 2;
       keyboard_y_position = 95;
       keyboard_row = 1;
       letter_pos = -5;
+      human_message = "";
     }
 
     if (digitalRead(up_button) == HIGH)
     { // go up
 
-      if (current_page == 8) {
+      if (current_page == 8)
+      {
         move_keyboard_up();
       }
 
-      if (scroll == false) return;
-      if (rectangle_y_position == 10) return;
+      if (scroll == false)
+        return;
+      if (rectangle_y_position == 10)
+        return;
       move_up_rectangle();
     }
 
     if (digitalRead(down_button) == HIGH)
     { // go down
-      
-      if (current_page == 8) {
+
+      if (current_page == 8)
+      {
         move_keyboard_down();
         delay(200);
       }
@@ -168,12 +177,16 @@ void loop()
       move_down_rectangle();
     }
 
-    if (digitalRead(right_button) == HIGH) {
-      if (current_page == 8) move_keyboard_right();
+    if (digitalRead(right_button) == HIGH)
+    {
+      if (current_page == 8)
+        move_keyboard_right();
     }
 
-    if (digitalRead(left_button) == HIGH) {
-      if (current_page == 8) move_keyboard_left();
+    if (digitalRead(left_button) == HIGH)
+    {
+      if (current_page == 8)
+        move_keyboard_left();
     }
 
     if (digitalRead(select_button) == HIGH)
@@ -229,22 +242,14 @@ void loop()
       else if (rectangle_y_position == 110 && current_page == 7)
       {
         open_general_news(rectangle_y_position);
-      } else if (rectangle_y_position == 70 && current_page == 4)
+      }
+      else if (rectangle_y_position == 70 && current_page == 4)
       {
         open_gemeni();
-      } else if (current_page == 8) // keyboard click
+      }
+      else if (current_page == 8) // keyboard click
       {
-        int c = calculate_letter_position();
-        Serial.println(letters[c]);
-
-        if (keyboard_x_position == 117 && keyboard_y_position == 117) { // check if the user pressed the space button
-          tft.setCursor(letter_pos += 10, 82);
-          tft.print(letters[c]);
-          return;
-        } else {
-          tft.setCursor(letter_pos += 5, 82);
-          tft.print(letters[c]);
-        }
+        print_keyboard_letters();
       }
     }
 
@@ -285,34 +290,42 @@ void initialize_screen()
   open_main_page();
 }
 
-void initialize_loading() {
+void initialize_loading()
+{
   tft.fillScreen(ST7735_BLACK);
   tft.setCursor(50, 50);
   tft.print("LOADING");
 }
 
-void initialize_keyboard() {
+void initialize_keyboard()
+{
 
   int spacing = 16;
   int y_position = 98;
 
-  for (int i = 0; i <= 25; i++) {
-    if (i <= 9) {
+  for (int i = 0; i <= 25; i++)
+  {
+    if (i <= 9)
+    {
       tft.setCursor(5 + i * spacing, y_position);
       tft.print(letters[i]);
-    } else if (i <= 18) {
+    }
+    else if (i <= 18)
+    {
       tft.setCursor(5 + (i - 10) * spacing, y_position + 10);
       tft.print(letters[i]);
-    } else {
+    }
+    else
+    {
       tft.setCursor(5 + (i - 19) * spacing, y_position + 20);
       tft.print(letters[i]);
-      
+
       // Print the space button
-      tft.setCursor(117,117);
+      tft.setCursor(117, 117);
       tft.print("s");
-      
-      //Print the enter button
-      tft.setCursor(127, 117);
+
+      // Print the enter button
+      tft.setCursor(133, 117);
       tft.print("e");
     }
   }
@@ -320,24 +333,32 @@ void initialize_keyboard() {
   tft.drawLine(0, 90, 160, 90, ST7735_CYAN);
 }
 
-void move_keyboard_right() {
-  if (keyboard_x_position >= 144) return;
-  if (keyboard_x_position == 130 && keyboard_y_position == 106) return; // L letter block
-  if (keyboard_y_position == 117 && keyboard_x_position == 114) return; // Enter letter block
+void move_keyboard_right()
+{
+  if (keyboard_x_position >= 144)
+    return;
+  if (keyboard_x_position == 130 && keyboard_y_position == 106)
+    return; // L letter block
+  if (keyboard_y_position == 117 && keyboard_x_position == 114)
+    return; // Enter letter block
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
-void move_keyboard_left() {
-  if (keyboard_x_position <= 2) return;
+void move_keyboard_left()
+{
+  if (keyboard_x_position <= 2)
+    return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position -= 16;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
-void move_keyboard_up() {
-  if (keyboard_y_position <= 95) return;
+void move_keyboard_up()
+{
+  if (keyboard_y_position <= 95)
+    return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position -= 11;
   keyboard_row -= 1;
@@ -345,24 +366,69 @@ void move_keyboard_up() {
   delay(200);
 }
 
-void move_keyboard_down() {
-  if (keyboard_y_position >= 115 || keyboard_x_position == 146) return;
-  if (keyboard_y_position == 106 && keyboard_x_position == 130) return; // k and l letter block down
+void move_keyboard_down()
+{
+  if (keyboard_y_position >= 115 || keyboard_x_position == 146)
+    return;
+  if (keyboard_y_position == 106 && keyboard_x_position == 130)
+    return; // k and l letter block down
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position += 11;
   keyboard_row += 1;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
 }
 
-int calculate_letter_position() {
+int calculate_letter_position()
+{
   int col = (int)keyboard_x_position / 16;
 
-  if (keyboard_row == 2) {
+  if (keyboard_row == 2)
+  {
     col += 10;
-  } else if (keyboard_row == 3)
+  }
+  else if (keyboard_row == 3)
   {
     col += 19;
   }
-  Serial.print(letters[col]);
   return col;
+}
+
+void print_keyboard_letters() {
+  int c = calculate_letter_position();
+  Serial.println(letters[c]);
+
+  if (letter_pos >= 150) return; // max word limit
+
+  if (keyboard_x_position == 117 && keyboard_y_position == 117)
+  { // check if the user pressed the space button
+    tft.setCursor(letter_pos += 10, 82);
+    tft.println(letters[c]);
+    get_human_message();
+    return;
+  }
+  else
+  {
+    tft.setCursor(letter_pos += 5, 82);
+    tft.print(letters[c]);
+    get_human_message();
+  }
+}
+
+void get_human_message()
+{
+  int c = calculate_letter_position();
+
+  if (keyboard_x_position == 117 && keyboard_y_position == 117)
+  {
+    human_message += " ";
+    Serial.println(human_message);
+    Serial.println(keyboard_x_position);
+    return;
+  }
+  else
+  {
+    human_message += String(letters[c]);
+    Serial.println(human_message);
+    Serial.println(keyboard_x_position);
+  }
 }
