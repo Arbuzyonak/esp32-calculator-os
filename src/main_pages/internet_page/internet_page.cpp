@@ -20,7 +20,7 @@ void open_internet_page()
 
   tft.setCursor(15, 75);
   tft.setTextColor(ST7735_CYAN);
-  tft.print("Gemeni");
+  tft.print("Groq");
 
   tft.setCursor(15, 95);
   tft.setTextColor(ST7735_CYAN);
