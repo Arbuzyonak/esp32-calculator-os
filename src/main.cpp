@@ -418,7 +418,7 @@ void get_human_message()
 {
   int c = calculate_letter_position();
 
-  if (keyboard_x_position == 117 && keyboard_y_position == 117)
+  if (keyboard_x_position == 114 && keyboard_y_position == 117)
   {
     human_message += " ";
     Serial.println(human_message);
