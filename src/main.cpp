@@ -81,6 +81,7 @@ void move_keyboard_down();
 int calculate_letter_position();
 void print_keyboard_letters();
 void get_human_message();
+void open_groq();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
@@ -94,7 +95,7 @@ void open_clock_app();     // Open the clock app
 void open_news_app(); // Open the news app
 void open_general_news(int position);
 
-void open_gemeni();
+void open_ai();
 
 void setup()
 {
@@ -245,7 +246,7 @@ void loop()
       }
       else if (rectangle_y_position == 70 && current_page == 4)
       {
-        open_gemeni();
+        open_ai();
       }
       else if (current_page == 8) // keyboard click
       {
@@ -330,17 +331,18 @@ void initialize_keyboard()
     }
   }
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
-  tft.drawLine(0, 90, 160, 90, ST7735_CYAN);
+  tft.drawLine(0, 90, 160, 90, ST7735_CYAN); // bottom line
+  tft.drawLine(0, 80, 160, 80, ST7735_CYAN); // upper line
 }
 
 void move_keyboard_right()
 {
   if (keyboard_x_position >= 144)
     return;
-  if (keyboard_x_position == 130 && keyboard_y_position == 106)
-    return; // L letter block
-  if (keyboard_y_position == 117 && keyboard_x_position == 114)
-    return; // Enter letter block
+  //if (keyboard_x_position == 130 && keyboard_y_position == 106)
+    //return; // L letter block
+  //if (keyboard_y_position == 117 && keyboard_x_position == 114)
+    //return; // Enter letter block
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
@@ -370,8 +372,8 @@ void move_keyboard_down()
 {
   if (keyboard_y_position >= 115 || keyboard_x_position == 146)
     return;
-  if (keyboard_y_position == 106 && keyboard_x_position == 130)
-    return; // k and l letter block down
+  //if (keyboard_y_position == 106 && keyboard_x_position == 130)
+    //return; // k and l letter block down
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position += 11;
   keyboard_row += 1;
@@ -394,29 +396,33 @@ int calculate_letter_position()
 }
 
 void print_keyboard_letters() {
-  int c = calculate_letter_position();
-  Serial.println(letters[c]);
-
   if (letter_pos >= 150) return; // max word limit
 
-  if (keyboard_x_position == 117 && keyboard_y_position == 117)
-  { // check if the user pressed the space button
-    tft.setCursor(letter_pos += 10, 82);
-    tft.println(letters[c]);
+  if (keyboard_x_position == 114 && keyboard_y_position == 117) 
+  { // Space button
+    letter_pos += 5;
     get_human_message();
     return;
   }
-  else
-  {
-    tft.setCursor(letter_pos += 5, 82);
-    tft.print(letters[c]);
-    get_human_message();
+
+  if (keyboard_x_position == 130 && keyboard_y_position == 117)
+  { // Send a request to groq
+    open_groq();
+    return;
   }
+
+  int c = calculate_letter_position();
+  tft.setCursor(letter_pos += 5, 82);
+  tft.print(letters[c]);
+  get_human_message();
 }
 
 void get_human_message()
 {
   int c = calculate_letter_position();
+
+  Serial.print("x="); Serial.print(keyboard_x_position);
+  Serial.println("y="); Serial.print(keyboard_y_position);
 
   if (keyboard_x_position == 114 && keyboard_y_position == 117)
   {
@@ -431,4 +437,42 @@ void get_human_message()
     Serial.println(human_message);
     Serial.println(keyboard_x_position);
   }
+}
+
+void open_groq()
+{
+  WiFiClientSecure client;
+  client.setInsecure(); 
+
+  HTTPClient http;
+  http.begin(client, "https://api.groq.com/openai/v1/chat/completions");
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("Authorization", "Bearer " + GROQ_API_KEY);
+
+  JsonDocument reqDoc;
+  reqDoc["model"] = "openai/gpt-oss-20b";
+  JsonArray messages = reqDoc["messages"].to<JsonArray>();
+  JsonObject msg = messages.add<JsonObject>();
+  msg["role"] = "user";
+  msg["content"] = human_message;
+
+  String requestBody;
+  serializeJson(reqDoc, requestBody);
+
+  tft.setCursor(0, 5);
+  tft.print("Loading..."); // loading message
+
+  int responseCode = http.POST(requestBody);
+  String response = http.getString();
+
+  JsonDocument respDoc;
+  deserializeJson(respDoc, response);
+  String reply = respDoc["choices"][0]["message"]["content"];
+
+  tft.fillRect(0,0,160,79, ST7735_BLACK); // fill in the loading message
+
+  tft.setCursor(2,5);
+  tft.print(reply);
+
+  http.end();
 }
