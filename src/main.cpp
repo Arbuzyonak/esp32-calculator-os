@@ -59,6 +59,7 @@ String letters[] = {
 int current_page = 1;
 
 int headline = 0;
+int letter_pos = -5;
 
 bool scroll = true;
 
@@ -132,6 +133,7 @@ void loop()
       keyboard_x_position = 2;
       keyboard_y_position = 95;
       keyboard_row = 1;
+      letter_pos = -5;
     }
 
     if (digitalRead(up_button) == HIGH)
@@ -230,11 +232,20 @@ void loop()
       } else if (rectangle_y_position == 70 && current_page == 4)
       {
         open_gemeni();
-      } else if (current_page == 8)
+      } else if (current_page == 8) // keyboard click
       {
-        calculate_letter_position();
+        int c = calculate_letter_position();
+        Serial.println(letters[c]);
+
+        if (keyboard_x_position == 117 && keyboard_y_position == 117) { // check if the user pressed the space button
+          tft.setCursor(letter_pos += 10, 82);
+          tft.print(letters[c]);
+          return;
+        } else {
+          tft.setCursor(letter_pos += 5, 82);
+          tft.print(letters[c]);
+        }
       }
-      
     }
 
     // The things above this let us navigate between main pages
@@ -296,8 +307,12 @@ void initialize_keyboard() {
       tft.setCursor(5 + (i - 19) * spacing, y_position + 20);
       tft.print(letters[i]);
       
+      // Print the space button
+      tft.setCursor(117,117);
+      tft.print("s");
+      
       //Print the enter button
-      tft.setCursor(117, 117);
+      tft.setCursor(127, 117);
       tft.print("e");
     }
   }
