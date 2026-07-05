@@ -8,6 +8,7 @@ void open_weather_app()
 
   WiFiClientSecure client;
   client.setInsecure();
+  
   HTTPClient http;
   http.begin("https://api.open-meteo.com/v1/gem/?latitude=45.5&longitude=-73.57&current=temperature_2m,rain,snowfall,precipitation,cloud_cover,wind_speed_10m");
 
