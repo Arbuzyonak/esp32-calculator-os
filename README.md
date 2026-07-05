@@ -22,6 +22,9 @@ An operating system for the esp32 microcontroller with Internet functionality an
 - Conenct the screen to the esp32 (this is the best tutorial I could find, sadly it's in german so just translate the page. https://www.az-delivery.de/en/blogs/azdelivery-blog-fur-arduino-und-raspberry-pi/1-8-toll-tft-am-esp-32-dev-kit-c-betreiben)
 
 # Showcase
+- AI page
+<img width="4000" height="3000" alt="20260705_190851" src="https://github.com/user-attachments/assets/09a5fb01-93b6-4267-9cd3-0b7dfb244005" />
+
 - Main menu
 <img width="4000" height="3000" alt="20260705_190950" src="https://github.com/user-attachments/assets/59b0bc6c-cb2d-477a-adfd-039a64061a77" />
 
