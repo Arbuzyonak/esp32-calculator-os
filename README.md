@@ -9,3 +9,10 @@ An operating system for the esp32 microcontroller with Internet functionality an
 - esp32
 - 6 buttons
 - antena (optional)
+- usb cable to upload the code
+
+# How to setup
+- Install the platformio extention
+- import a project to platformio
+- create a secrets.h file will all of your secrets
+- upload the code to the esp32
