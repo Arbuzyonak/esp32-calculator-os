@@ -10,7 +10,7 @@
 #include "apps/Internet/weather_app/weather_app.h"
 #include "apps/Internet/news_app/news_app.h"
 #include "apps/Internet/clock_app/clock_app.h"
-#include "apps/Internet/gemeni_app/gemeni_app.h"
+#include "apps/Internet/groq_app/groq_app.h"
 
 #include "main_pages/internet_page/internet_page.h"
 #include "main_pages/games_page/games_page.h"
@@ -325,8 +325,12 @@ void initialize_keyboard()
       tft.setCursor(117, 117);
       tft.print("s");
 
-      // Print the enter button
+      // Print the delete button
       tft.setCursor(133, 117);
+      tft.print("d");
+
+      // Print the enter button
+      tft.setCursor(149, 117);
       tft.print("e");
     }
   }
@@ -405,9 +409,17 @@ void print_keyboard_letters() {
     return;
   }
 
-  if (keyboard_x_position == 130 && keyboard_y_position == 117)
+  if (keyboard_x_position == 130 && keyboard_y_position == 117) // delete text button
+  {
+    tft.fillRect(0, 81, 160, 9, ST7735_BLACK);
+    human_message = "";
+  }
+
+  if (keyboard_x_position == 146 && keyboard_y_position == 117)
   { // Send a request to groq
+    tft.fillRect(0, 0, 160, 79, ST7735_BLACK);
     open_groq();
+    human_message = "";
     return;
   }
 
