@@ -248,11 +248,13 @@ void loop()
       else if (current_page == 8) // keyboard click
       {
         print_keyboard_letters();
+      } else if (current_page == 4 && rectangle_y_position == 90)
+      {
+        tft.fillScreen(ST7735_BLACK);
+        tft.setCursor(40,60);
+        tft.print("Coming soon...");
       }
     }
-
-    // The things above this let us navigate between main pages
-
     delay(200);
   }
 }
@@ -291,7 +293,7 @@ void initialize_screen()
 void initialize_loading()
 {
   tft.fillScreen(ST7735_BLACK);
-  tft.setCursor(50, 50);
+  tft.setCursor(64, 80);
   tft.print("LOADING");
 }
 
