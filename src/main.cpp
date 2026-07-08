@@ -79,6 +79,7 @@ int calculate_letter_position();
 void print_keyboard_letters();
 void get_human_message();
 void open_groq();
+void open_ai();
 
 void open_main_page();       // Draw the main screen the Calculator, Games and Internet buttons
 void open_calculator_page(); // Open the page with all the functions for math
@@ -92,7 +93,7 @@ void open_clock_app();     // Open the clock app
 void open_news_app(); // Open the news app
 void open_general_news(int position);
 
-void open_ai();
+void coming_soon_screen();
 
 void setup()
 {
@@ -250,9 +251,7 @@ void loop()
         print_keyboard_letters();
       } else if (current_page == 4 && rectangle_y_position == 90)
       {
-        tft.fillScreen(ST7735_BLACK);
-        tft.setCursor(40,60);
-        tft.print("Coming soon...");
+        coming_soon_screen();
       }
     }
     delay(200);
@@ -292,8 +291,16 @@ void initialize_screen()
 
 void initialize_loading()
 {
+  scroll = false;
   tft.fillScreen(ST7735_BLACK);
   tft.setCursor(64, 80);
   tft.print("LOADING");
 }
 
+void coming_soon_screen()
+{
+  scroll = false;
+  tft.fillScreen(ST7735_BLACK);
+  tft.setCursor(40,60);
+  tft.print("Coming soon...");
+}
