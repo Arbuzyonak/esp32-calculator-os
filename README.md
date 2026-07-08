@@ -37,6 +37,8 @@ An operating system for the esp32 microcontroller with Internet functionality an
 - Clock and date app
 <img width="4000" height="3000" alt="20260705_190907" src="https://github.com/user-attachments/assets/7456bba8-2f4b-4972-8b45-c55e4b2a1502" />
 
+##
+
 **For better understanding of the code:**
 - current_page = 1 -→ Main page with the Calculator, Games and Internet buttons
 - current_page = 2 -→ Calculator page
