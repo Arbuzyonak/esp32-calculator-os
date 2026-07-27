@@ -51,9 +51,9 @@ void initialize_keyboard()
       tft.print("e");
     }
   }
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
-  tft.drawLine(0, 90, 160, 90, ST7735_CYAN); // bottom line
-  tft.drawLine(0, 80, 160, 80, ST7735_CYAN); // upper line
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, current_color);
+  tft.drawLine(0, 90, 160, 90, current_color); // bottom line
+  tft.drawLine(0, 80, 160, 80, current_color); // upper line
 }
 
 void move_keyboard_right()
@@ -61,7 +61,7 @@ void move_keyboard_right()
   if (keyboard_x_position >= 144) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, current_color);
 }
 
 void move_keyboard_left()
@@ -69,7 +69,7 @@ void move_keyboard_left()
   if (keyboard_x_position <= 2) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position -= 16;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, current_color);
 }
 
 void move_keyboard_up()
@@ -78,7 +78,7 @@ void move_keyboard_up()
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position -= 11;    
   keyboard_row -= 1;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, current_color);
   delay(200);
 }
 
@@ -88,7 +88,7 @@ void move_keyboard_down()
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position += 11;
   keyboard_row += 1;
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, current_color);
 }
 
 int calculate_letter_position()

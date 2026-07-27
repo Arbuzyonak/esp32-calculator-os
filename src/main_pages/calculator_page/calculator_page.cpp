@@ -7,16 +7,16 @@ void open_calculator_page()
   tft.fillScreen(ST7735_BLACK);
 
   tft.setCursor(15, 15);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Basic");
 
   tft.setCursor(15, 35);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Converter");
 
   tft.setCursor(15, 55);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Functions");
 
-  tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
+  tft.drawRect(10, rectangle_y_position, 70, 17, current_color);
 }

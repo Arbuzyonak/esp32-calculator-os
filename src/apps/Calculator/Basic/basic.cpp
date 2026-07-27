@@ -41,7 +41,7 @@ void initialize_calculator()
     tft.print(calculator_characters[i]);
   }
 
-  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
-  tft.drawLine(0, 90, 160, 90, ST7735_CYAN);
-  tft.drawLine(0, 80, 160, 80, ST7735_CYAN);
+  tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, current_color);
+  tft.drawLine(0, 90, 160, 90, current_color);
+  tft.drawLine(0, 80, 160, 80, current_color);
 }

@@ -7,24 +7,24 @@ void open_internet_page()
   tft.fillScreen(ST7735_BLACK);
 
   tft.setCursor(15, 15);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Weather");
 
   tft.setCursor(15, 35);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Clock ");
 
   tft.setCursor(15, 55);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("News");
 
   tft.setCursor(15, 75);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Groq");
 
   tft.setCursor(15, 95);
-  tft.setTextColor(ST7735_CYAN);
+  tft.setTextColor(current_color);
   tft.print("Home Server");
 
-  tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
+  tft.drawRect(10, rectangle_y_position, 70, 17, current_color);
 }
