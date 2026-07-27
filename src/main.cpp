@@ -16,6 +16,7 @@
 #include "main_pages/games_page/games_page.h"
 #include "main_pages/calculator_page/calculator_page.h"
 #include "main_pages/main_page/main_page.h"
+#include "main_pages/settings_page/settings_page.h"
 
 #include "functions/keyboard/keyboard.h"
 
@@ -94,6 +95,8 @@ void open_clock_app();     // Open the clock app
 
 void open_news_app(); // Open the news app
 void open_general_news(int position);
+
+void open_settings_page();
 
 void coming_soon_screen();
 
@@ -178,7 +181,11 @@ void loop()
       if (scroll == false)
         return;
 
-      if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7))
+      if (rectangle_y_position >= 30 && current_page == 10)
+        return;
+      if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7 || current_page == 1))
+        return;
+      if (rectangle_y_position >= 70 && (current_page == 1))
         return;
       if (rectangle_y_position >= 90 && (current_page == 3 || current_page == 4))
         return;
@@ -225,6 +232,9 @@ void loop()
       else if (rectangle_y_position == 50 && current_page == 1)
       {
         open_internet_page();
+      } else if (rectangle_y_position == 70 && current_page == 1)
+      {
+        open_settings_page();
       }
       else if (rectangle_y_position == 10 && current_page == 4)
       {
