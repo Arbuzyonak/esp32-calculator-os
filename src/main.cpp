@@ -19,6 +19,8 @@
 
 #include "functions/keyboard/keyboard.h"
 
+#include "apps/Calculator/Basic/basic.h"
+
 #include "secrets.h"
 
 // Notes: use canvaces instead of directly printing // Instead of buttons use http and a browser for now
@@ -145,8 +147,13 @@ void loop()
 
       if (current_page == 8)
       {
+        if (keyboard_x_position == 146 && keyboard_y_position == 117) return; // Enter letter block
+        move_keyboard_up();
+      } else if (current_page == 9)
+      {
         move_keyboard_up();
       }
+      
 
       if (scroll == false)
         return;
@@ -160,9 +167,14 @@ void loop()
 
       if (current_page == 8)
       {
+        if (keyboard_x_position == 146) return;
         move_keyboard_down();
         delay(200);
+      } else if (current_page == 9)
+      {
+        move_keyboard_down();
       }
+      
 
       if (scroll == false)
         return;
@@ -179,14 +191,23 @@ void loop()
     if (digitalRead(right_button) == HIGH)
     {
       if (current_page == 8)
+        if (keyboard_x_position == 130 && keyboard_y_position == 106) return; // L letter block
         move_keyboard_right();
+    } else if (current_page == 9)
+    {
+      move_keyboard_right();
     }
+    
 
     if (digitalRead(left_button) == HIGH)
     {
       if (current_page == 8)
         move_keyboard_left();
+    } else if (current_page == 9)
+    {
+      move_keyboard_left();
     }
+    
 
     if (digitalRead(select_button) == HIGH)
     { // The options are divided like this: Calculator = 10p; Games = 30p; Internet = 50p;
@@ -251,7 +272,10 @@ void loop()
         print_keyboard_letters();
       } else if (current_page == 4 && rectangle_y_position == 90)
       {
-        coming_soon_screen();
+        coming_soon_screen(); // home server
+      } else if (current_page == 2 && rectangle_y_position == 10) // basic calculator
+      {
+        initialize_calculator();
       }
     }
     delay(200);
@@ -293,7 +317,7 @@ void initialize_loading()
 {
   scroll = false;
   tft.fillScreen(ST7735_BLACK);
-  tft.setCursor(64, 80);
+  tft.setCursor(50, 60);
   tft.print("LOADING");
 }
 

@@ -58,10 +58,7 @@ void initialize_keyboard()
 
 void move_keyboard_right()
 {
-  if (keyboard_x_position >= 144)
-    return;
-  if (keyboard_x_position == 130 && keyboard_y_position == 106)
-    return; // L letter block
+  if (keyboard_x_position >= 144) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position += 16;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
@@ -69,8 +66,7 @@ void move_keyboard_right()
 
 void move_keyboard_left()
 {
-  if (keyboard_x_position <= 2)
-    return;
+  if (keyboard_x_position <= 2) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_x_position -= 16;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
@@ -78,10 +74,7 @@ void move_keyboard_left()
 
 void move_keyboard_up()
 {
-  if (keyboard_y_position <= 95)
-    return;
-  if (keyboard_x_position == 146 && keyboard_y_position == 117) return; // Enter letter block
-
+  if (keyboard_y_position <= 95) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position -= 11;
   keyboard_row -= 1;
@@ -91,10 +84,7 @@ void move_keyboard_up()
 
 void move_keyboard_down()
 {
-  if (keyboard_y_position >= 115 || keyboard_x_position == 146)
-    return;
-  //if (keyboard_y_position == 106 && keyboard_x_position == 130)
-    //return; // k and l letter block down
+  if (keyboard_y_position >= 115) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
   keyboard_y_position += 11;
   keyboard_row += 1;
