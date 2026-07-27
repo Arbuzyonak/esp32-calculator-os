@@ -16,5 +16,9 @@ void open_main_page()
   tft.setTextColor(ST7735_CYAN);
   tft.print("Internet");
 
+  tft.setCursor(15, 75);
+  tft.setTextColor(ST7735_CYAN);
+  tft.print("Settings");
+
   tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
 }
