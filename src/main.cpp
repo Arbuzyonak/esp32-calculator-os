@@ -106,6 +106,9 @@ void open_settings_page();
 void open_color();
 int choose_color(int rectangle_y_position, int current_page);
 
+int calculate_number_position();
+void print_numbers();
+
 void coming_soon_screen();
 
 void setup()
@@ -238,7 +241,6 @@ void loop()
         open_color();
       } else if (current_page == 11)
       {
-        Serial.print(rectangle_y_position);
         choose_color(rectangle_y_position, current_page);
       }
       else if (rectangle_y_position == 10 && current_page == 4) //weather
@@ -294,7 +296,11 @@ void loop()
       } else if (current_page == 2 && rectangle_y_position == 10) // basic calculator
       {
         initialize_calculator();
+      } else if (current_page == 9)
+      {
+        print_numbers();
       }
+      
     }
     delay(200);
   }
