@@ -94,6 +94,7 @@ void move_keyboard_down()
 int calculate_letter_position()
 {
   int col = (int)keyboard_x_position / 16;
+  Serial.println(col);
 
   if (keyboard_row == 2)
   {
@@ -143,15 +144,11 @@ void get_human_message()
   if (keyboard_x_position == 114 && keyboard_y_position == 117)
   {
     human_message += " ";
-    Serial.println(human_message);
-    Serial.println(keyboard_x_position);
     return;
   }
   else
   {
     human_message += String(letters[c]);
-    Serial.println(human_message);
-    Serial.println(keyboard_x_position);
   }
 }
 
