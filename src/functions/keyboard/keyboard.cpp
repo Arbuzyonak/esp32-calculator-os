@@ -76,7 +76,7 @@ void move_keyboard_up()
 {
   if (keyboard_y_position <= 95) return;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_BLACK);
-  keyboard_y_position -= 11;
+  keyboard_y_position -= 11;    
   keyboard_row -= 1;
   tft.drawRect(keyboard_x_position, keyboard_y_position, 12, 12, ST7735_CYAN);
   delay(200);

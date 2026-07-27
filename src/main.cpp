@@ -144,7 +144,6 @@ void loop()
 
     if (digitalRead(up_button) == HIGH)
     { // go up
-
       if (current_page == 8)
       {
         if (keyboard_x_position == 146 && keyboard_y_position == 117) return; // Enter letter block
@@ -164,14 +163,14 @@ void loop()
 
     if (digitalRead(down_button) == HIGH)
     { // go down
-
       if (current_page == 8)
       {
         if (keyboard_x_position == 146) return;
         move_keyboard_down();
         delay(200);
-      } else if (current_page == 9)
+      } else if (current_page == 9) // calculator basic page
       {
+        delay(200);
         move_keyboard_down();
       }
       
@@ -191,21 +190,25 @@ void loop()
     if (digitalRead(right_button) == HIGH)
     {
       if (current_page == 8)
+      {
         if (keyboard_x_position == 130 && keyboard_y_position == 106) return; // L letter block
         move_keyboard_right();
-    } else if (current_page == 9)
-    {
-      move_keyboard_right();
+      }
+      else if (current_page == 9) // calculator basic
+      {
+        move_keyboard_right();
+      }
     }
-    
-
-    if (digitalRead(left_button) == HIGH)
+    else if (digitalRead(left_button) == HIGH)
     {
       if (current_page == 8)
+      {
         move_keyboard_left();
-    } else if (current_page == 9)
-    {
-      move_keyboard_left();
+      }
+      else if (current_page == 9) // calculator basic
+      {
+        move_keyboard_left();
+      }
     }
     
 
