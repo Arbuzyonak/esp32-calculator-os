@@ -1,5 +1,7 @@
 #include "apps/globals.h"
 #include "secrets.h"
+#include "functions/keyboard/keyboard.h"
+
 extern int keyboard_x_position;
 extern int keyboard_y_position;
 extern int keyboard_row;
@@ -25,9 +27,7 @@ void initialize_calculator()
   const int ROW3 = 6;   // row 3 starts at index 6
   const int ROW4 = 9;   // row 4 starts at index 9
 
-  int count = sizeof(calculator_characters) / sizeof(calculator_characters[0]);
-
-  for (int i = 0; i < count; i++)
+  for (int i = 0; i < 9; i++)
   {
     if (i < ROW2)
       tft.setCursor(5 + i * spacing, y);
