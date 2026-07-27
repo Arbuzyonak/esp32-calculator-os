@@ -15,5 +15,6 @@ extern int current_page;
 extern bool scroll;
 extern int rectangle_y_position;
 extern int initialize_loading();
+extern uint16_t current_color;
 
 #endif

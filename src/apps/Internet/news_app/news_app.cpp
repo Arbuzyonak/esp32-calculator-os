@@ -9,7 +9,7 @@ void open_news_app()
   tft.fillScreen(ST7735_BLACK);
 
   rectangle_y_position = 10;
-  tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
+  tft.drawRect(10, rectangle_y_position, 70, 17, current_color);
 
   tft.setCursor(15, 15);
   tft.print("General");

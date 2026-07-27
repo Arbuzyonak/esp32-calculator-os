@@ -7,12 +7,12 @@ void open_settings_page()
     rectangle_y_position = 10;
 
     tft.setCursor(15, 15);
-    tft.setTextColor(ST7735_CYAN);
+    tft.setTextColor(current_color);
     tft.print("wifi");
 
     tft.setCursor(15, 35);
-    tft.setTextColor(ST7735_CYAN);
+    tft.setTextColor(current_color);
     tft.print("colour ");
 
-    tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
+    tft.drawRect(10, rectangle_y_position, 70, 17, current_color);
 }

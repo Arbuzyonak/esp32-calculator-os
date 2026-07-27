@@ -19,10 +19,15 @@
 #include "main_pages/settings_page/settings_page.h"
 
 #include "functions/keyboard/keyboard.h"
+#include "functions/reset_screen/reset.h"
 
 #include "apps/Calculator/Basic/basic.h"
 
+#include "apps/Settings/color/color.h"
+
 #include "secrets.h"
+
+extern uint16_t current_color;
 
 // Notes: use canvaces instead of directly printing // Instead of buttons use http and a browser for now
 
@@ -70,6 +75,7 @@ void initialize_screen();  // Start up screen
 void initialize_buttons(); // pinMode setup
 void initialize_loading();
 void initialize_keyboard();
+void reset_screen();
 
 void move_up_rectangle();   // Move the select rectangle 20 pixels up
 void move_down_rectangle(); // Move the select rectangle 20 pixels down
@@ -97,6 +103,8 @@ void open_news_app(); // Open the news app
 void open_general_news(int position);
 
 void open_settings_page();
+void open_color();
+int choose_color(int rectangle_y_position, int current_page);
 
 void coming_soon_screen();
 
@@ -131,18 +139,7 @@ void loop()
     { // Go to the main page from the calcualtor page
       if (current_page == 1)
         return;
-
-      open_main_page();
-      tft.setTextSize(1);
-      current_page = 1;
-      headline = 0;
-      scroll = true;
-
-      keyboard_x_position = 2;
-      keyboard_y_position = 95;
-      keyboard_row = 1;
-      letter_pos = -5;
-      human_message = "";
+      reset_screen();
     }
 
     if (digitalRead(up_button) == HIGH)
@@ -183,9 +180,9 @@ void loop()
 
       if (rectangle_y_position >= 30 && current_page == 10)
         return;
-      if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7 || current_page == 1))
+      if (rectangle_y_position >= 50 && !(current_page == 3 || current_page == 4 || current_page == 7 || current_page == 1 || current_page == 11))
         return;
-      if (rectangle_y_position >= 70 && (current_page == 1))
+      if (rectangle_y_position >= 70 && (current_page == 1 || current_page == 11))
         return;
       if (rectangle_y_position >= 90 && (current_page == 3 || current_page == 4))
         return;
@@ -203,6 +200,7 @@ void loop()
       }
       else if (current_page == 9) // calculator basic
       {
+        if (keyboard_x_position >= 30) return;
         move_keyboard_right();
       }
     }
@@ -221,62 +219,69 @@ void loop()
 
     if (digitalRead(select_button) == HIGH)
     { // The options are divided like this: Calculator = 10p; Games = 30p; Internet = 50p;
-      if (rectangle_y_position == 10 && current_page == 1)
+      if (rectangle_y_position == 10 && current_page == 1) // calculator
       {
         open_calculator_page();
       }
-      else if (rectangle_y_position == 30 && current_page == 1)
+      else if (rectangle_y_position == 30 && current_page == 1) // games
       {
         open_games_page();
       }
-      else if (rectangle_y_position == 50 && current_page == 1)
+      else if (rectangle_y_position == 50 && current_page == 1) // internet
       {
         open_internet_page();
-      } else if (rectangle_y_position == 70 && current_page == 1)
+      } else if (rectangle_y_position == 70 && current_page == 1) // settings
       {
         open_settings_page();
+      } else if (current_page == 10 && rectangle_y_position == 30) // open color
+      {
+        open_color();
+      } else if (current_page == 11)
+      {
+        Serial.print(rectangle_y_position);
+        choose_color(rectangle_y_position, current_page);
       }
-      else if (rectangle_y_position == 10 && current_page == 4)
+      else if (rectangle_y_position == 10 && current_page == 4) //weather
       {
         open_weather_app();
       }
-      else if (current_page == 5)
+      else if (current_page == 5) // weather second page
       {
         open_weather_app_2();
       }
-      else if (rectangle_y_position == 30 && current_page == 4)
+      else if (rectangle_y_position == 30 && current_page == 4) // clock
       {
         open_clock_app();
       }
-      else if (rectangle_y_position == 50 && current_page == 4)
+      else if (rectangle_y_position == 50 && current_page == 4) // news
       {
         open_news_app();
       }
-      else if (rectangle_y_position == 10 && current_page == 7)
+      else if (rectangle_y_position == 10 && current_page == 7) // general news
       {
         open_general_news(rectangle_y_position);
       }
-      else if (rectangle_y_position == 30 && current_page == 7)
+      else if (rectangle_y_position == 30 && current_page == 7) // general news
       {
         open_general_news(rectangle_y_position);
       }
-      else if (rectangle_y_position == 50 && current_page == 7)
+      else if (rectangle_y_position == 50 && current_page == 7) // general news
       {
         open_general_news(rectangle_y_position);
       }
-      else if (rectangle_y_position == 70 && current_page == 7)
+      else if (rectangle_y_position == 70 && current_page == 7) // general news
       {
         open_general_news(rectangle_y_position);
       }
-      else if (rectangle_y_position == 90 && current_page == 7)
+      else if (rectangle_y_position == 90 && current_page == 7) // general news
       {
         open_general_news(rectangle_y_position);
       }
-      else if (rectangle_y_position == 110 && current_page == 7)
+      else if (rectangle_y_position == 110 && current_page == 7) // general news
       {
         open_general_news(rectangle_y_position);
       }
-      else if (rectangle_y_position == 70 && current_page == 4)
+      else if (rectangle_y_position == 70 && current_page == 4) // groq
       {
         open_ai();
       }
@@ -308,14 +313,14 @@ void move_up_rectangle()
 {
   tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_BLACK);
   rectangle_y_position -= 20;
-  tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
+  tft.drawRect(10, rectangle_y_position, 70, 17, current_color);
 }
 // The operators have to be reversed because the more down you go the more pixels you have so the top is 0,0 and bottom is 0,50 or sum
 void move_down_rectangle()
 {
   tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_BLACK);
   rectangle_y_position += 20;
-  tft.drawRect(10, rectangle_y_position, 70, 17, ST7735_CYAN);
+  tft.drawRect(10, rectangle_y_position, 70, 17, current_color);
 }
 
 void initialize_screen()
