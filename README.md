@@ -18,6 +18,24 @@ I made it because I wanted something on my desk at school that could do more tha
 - **Games** none yet
 - **Color themes**  cyan, green, red, white
 
+## Showcase
+ 
+| Main menu | Settings |
+|---|---|
+| <img width="400" alt="Main menu with Calculator, Games, Internet and Settings" src="https://github.com/user-attachments/assets/fb372ba4-4c8d-4c4f-9246-cd5a9df61c68" /> | <img width="400" alt="Settings page" src="https://github.com/user-attachments/assets/b859296f-8a4e-4120-b5dc-e30d4e859f69" /> |
+ 
+| Calculator | Calculator result |
+|---|---|
+| <img width="400" alt="Calculator with 66+67 entered" src="https://github.com/user-attachments/assets/17944d9f-cc64-45ad-a1e4-cfcbb5ef89a8" /> | <img width="400" alt="Calculator showing the result 133" src="https://github.com/user-attachments/assets/f061e6df-643a-497d-bfc6-a318da526954" /> |
+ 
+| AI page | News app |
+|---|---|
+| <img width="400" alt="AI page answering a question over WiFi" src="https://github.com/user-attachments/assets/fdcb7176-ef0f-45a8-97dd-41369b8e3a94" /> | <img width="400" alt="News app showing headlines" src="https://github.com/user-attachments/assets/903e84fe-826d-44be-856f-60d054d43bb2" /> |
+ 
+| Weather app | Weather |
+|---|---|
+| <img width="400" alt="Weather app" src="https://github.com/user-attachments/assets/d8558359-03ed-4203-aa87-17957b1cc312" /> | <img width="400" alt="Weather forecast view" src="https://github.com/user-attachments/assets/bb9ea939-75ae-4a52-8f58-762eea11c7f3" /> |
+
 ## Equipment needed
 
 | Part | Notes |
@@ -70,26 +88,6 @@ Get a free Groq API key at https://console.groq.com.
 **3. Wire it up** per the table above.
 
 **4. Upload** with PlatformIO's upload button, or `pio run -t upload`.
-
-## Showcase
- 
-| Main menu | Settings |
-|---|---|
-| <img width="400" alt="Main menu with Calculator, Games, Internet and Settings" src="https://github.com/user-attachments/assets/fb372ba4-4c8d-4c4f-9246-cd5a9df61c68" /> | <img width="400" alt="Settings page" src="https://github.com/user-attachments/assets/b859296f-8a4e-4120-b5dc-e30d4e859f69" /> |
- 
-| Calculator | Calculator result |
-|---|---|
-| <img width="400" alt="Calculator with 66+67 entered" src="https://github.com/user-attachments/assets/17944d9f-cc64-45ad-a1e4-cfcbb5ef89a8" /> | <img width="400" alt="Calculator showing the result 133" src="https://github.com/user-attachments/assets/f061e6df-643a-497d-bfc6-a318da526954" /> |
- 
-| AI page | News app |
-|---|---|
-| <img width="400" alt="AI page answering a question over WiFi" src="https://github.com/user-attachments/assets/fdcb7176-ef0f-45a8-97dd-41369b8e3a94" /> | <img width="400" alt="News app showing headlines" src="https://github.com/user-attachments/assets/903e84fe-826d-44be-856f-60d054d43bb2" /> |
- 
-| Weather app | Weather |
-|---|---|
-| <img width="400" alt="Weather app" src="https://github.com/user-attachments/assets/d8558359-03ed-4203-aa87-17957b1cc312" /> | <img width="400" alt="Weather forecast view" src="https://github.com/user-attachments/assets/bb9ea939-75ae-4a52-8f58-762eea11c7f3" /> |
- 
-
 
 ## How the code is laid out
 
