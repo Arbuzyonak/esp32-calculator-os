@@ -28,6 +28,7 @@
 #include "secrets.h"
 
 extern uint16_t current_color;
+extern int y;
 
 // Notes: use canvaces instead of directly printing // Instead of buttons use http and a browser for now
 
@@ -203,8 +204,19 @@ void loop()
       }
       else if (current_page == 9) // calculator basic
       {
-        if (keyboard_x_position >= 30) return;
-        move_keyboard_right();
+        if (y == 98)
+        {
+          if (keyboard_x_position >= 60 && y == 98) return;
+          if (keyboard_x_position >= 45 && y == 108) return;
+          if (keyboard_x_position >= 45 && y == 108) return;
+          move_keyboard_right();
+        } else if (keyboard_x_position >= 50)
+        {
+          return;
+        } else
+        {
+          move_keyboard_right();
+        }
       }
     }
     else if (digitalRead(left_button) == HIGH)
