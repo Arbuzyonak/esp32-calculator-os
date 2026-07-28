@@ -7,6 +7,7 @@ extern int keyboard_y_position;
 extern int keyboard_row;
 extern int letter_pos;
 extern String human_message;
+extern bool operator_choosen;
 
 void reset_screen()
 {
@@ -21,4 +22,5 @@ void reset_screen()
     keyboard_row = 1;
     letter_pos = -5;
     human_message = "";
+    operator_choosen = false;
 }
