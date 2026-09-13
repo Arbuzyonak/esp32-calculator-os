@@ -5,6 +5,7 @@ A handheld calculator OS I built from scratch on an ESP32. With an AI assistant,
 I made it because I wanted something on my desk at school that could do more than arithmetics. So it runs a little OS: a main menu, apps you can navigate to with the buttons, and an AI page I can actually ask questions.
 
 **Demo video:** https://www.youtube.com/watch?v=k9yE6ENTkz4
+
 **Test in browser:** https://wokwi.com/projects/470760782839470081
 
 ---
